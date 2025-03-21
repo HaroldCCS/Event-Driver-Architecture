@@ -1,0 +1,52 @@
+# Ejecutar con: docker compose up -d
+version: '3.9'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "odsn-qjdl-7284-9452"
+      MYSQL_DATABASE: "eventtest"
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "lpsj-dfxs-7234-9473"
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-container
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    ports:
+      - "5672:5672"   # Puerto para la comunicación AMQP
+      - "15672:15672" # Interfaz web de administración
+    networks:
+      - app_network
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-container
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app_network
+
+volumes:
+  mysql_data:
+  mongodb_data:
+
+networks:
+  app_network:
